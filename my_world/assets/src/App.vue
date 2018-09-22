@@ -1,7 +1,17 @@
 <template>
-  <div id="landing" style="background:#ECECEC; padding:30px; height: 100%;">
-    <a-card title="정빈이가 밥을 얼마나 먹었는지 확인해볼까?" :bordered="false" style="width: 100%; height: 100%; overflow-y: scroll;">
-      <p>정빈이가 먹은 양과 시간을 입력해주세요</p>
+  <div id="landing" style="background:#ECECEC; padding:30px;">
+    <a-card class="container" title="EOS Contracts to Follow" :bordered="false" style="width: 100%; height: 100%; overflow-y: scroll; margin-left: auto; margin-right: auto; margin-bottom: 40px;">
+     <a-row :gutter="16">
+        <a-col :span="6">
+          <p>card content</p>
+        </a-col>
+        <a-col :span="6">
+          <p>card content</p>
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card class="container" title="EOS Contracts to Follow" :bordered="false" style="width: 100%; height: 100%; overflow-y: scroll; margin-left: auto; margin-right: auto;">
+      <p>Recommended contracts</p>
       <a-row class="record-list">
         <a-col :span="12">
           <a-radio-group :value="milk_type" @change="handleTypeChange">
@@ -73,9 +83,11 @@ export default {
   },
   async created() {
     let action_records = await this.$parent.eos.getActions("user")
+    console.log(action_records);
     this.histories = action_records.actions.map(
       action => action.action_trace.act.data
     );
+    console.log(this.histories);
   },
   methods: {
     moment,
