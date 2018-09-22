@@ -7,11 +7,13 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
+import Eos from './components/Eos.vue';
 
 export default {
   name: 'app',
   components: {
     HelloWorld,
+    Eos,
   },
 };
 </script>
