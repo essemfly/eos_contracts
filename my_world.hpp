@@ -73,7 +73,7 @@ class myworld : public contract
 
     typedef multi_index<N(apps), app> app_table;
 
-    // @abi table flw_records i64
+    // @abi table flwrecords i64
     struct followship
     {
         uint64_t id;
@@ -83,12 +83,11 @@ class myworld : public contract
         time updated_at;
 
         uint64_t primary_key() const { return id; }
-        account_name by_account() const { return author; }
 
         EOSLIB_SERIALIZE(followship, (id)(author)(app_id)(created_at)(updated_at))
     };
 
-    typedef multi_index<N(flw_records), followship> follow_table;
+    typedef multi_index<N(flwrecords), followship> follow_table;
 };
 
 EOSIO_ABI(myworld, (regctr)(follow)(unfollow))
