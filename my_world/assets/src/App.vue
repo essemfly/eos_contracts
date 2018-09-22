@@ -72,7 +72,7 @@ export default {
     };
   },
   async created() {
-    let action_records = await this.$parent.eos.getActions("daybit")
+    let action_records = await this.$parent.eos.getActions("user")
     this.histories = action_records.actions.map(
       action => action.action_trace.act.data
     );
