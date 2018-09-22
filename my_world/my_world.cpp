@@ -3,9 +3,9 @@
 // @abi action regctr
 void myworld::regctr(const account_name user, const string app_name, const string description, const vector<string> actions)
 {
-    app_table app(_self, _self);
     require_auth(user);
-
+    app_table app(_self, _self);
+    
     app_id app_index;
     get_app_id(app_index);
     uint64_t app_id = app_index.id++;
