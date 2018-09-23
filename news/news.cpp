@@ -20,8 +20,9 @@ void news::write(const account_name author, const string title, const string con
     else
     {
         article.modify(article_iter, 0, [&](auto &data) {
-            data.id = article_iter->id + 1;
-            data.num_news = article_iter->num_news + 1;
+            uint64_t num_news = article_iter->num_news;
+            data.id = article_iter->id;
+            data.num_news = num_news + 1;
             data.updated_at = now();
         });
     }

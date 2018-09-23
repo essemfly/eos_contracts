@@ -1,5 +1,5 @@
 <template>
-  <div id="landing" style="background:#ECECEC; padding:30px; height: 100%;">
+  <div id="landing" style="background:#ECECEC; padding:30px;">
     <a-card class="container" title="EOS Alert Messages" :bordered="false" style="width: 100%; overflow-y: scroll; margin-left: auto; margin-right: auto;">
       <p>Only permitted accounts post an alert</p>
       <a-list
@@ -89,16 +89,16 @@ export default {
     
     console.log(weather_feeds);
     this.feeds = goodnews_feeds.actions.map(
-      action => action.action_trace.act.data
+      action => action.action_trace.act
     );
     this.feeds.push(badnews_feeds.actions.map(
-      action => action.action_trace.act.data
+      action => action.action_trace.act
     ));
     this.feeds.push(weather_feeds.actions.map(
-      action => action.action_trace.act.data
+      action => action.action_trace.act
     ));
     this.feeds.push(soccer_feeds.actions.map(
-      action => action.action_trace.act.data
+      action => action.action_trace.act
     ));
 
     console.log(this.feeds)
