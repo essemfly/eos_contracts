@@ -17,7 +17,7 @@ new Vue({
 
     const config = {
       chainId: chain.sys,
-      keyProvider: ['5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3', '5Jmsawgsp1tQ3GD6JyGCwy1dcvqKZgX6ugMVMdjirx85iv5VyPR'],
+      keyProvider: ['5HuD228A2ZUDZvxMJadS7QLFBpLvX1m2NHigbM76VQs74t68LX1', '5Jbstf6aWQpf3cm9nXTCW2YjjGG8uyMQLFwSohE3sTUGGDk5Emu'],
       httpEndpoint: "http://localhost:8888",
       expireInSeconds: 60,
       broadcast: true,
@@ -28,7 +28,7 @@ new Vue({
     return {
       eos: Eosjs(config),
       options: {
-        authorization: ["user@active"],
+        authorization: ["seokmin@active"],
         broadcast: true,
         sign: true
       }
