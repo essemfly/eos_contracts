@@ -39,10 +39,10 @@
       >
         <a-list-item slot="renderItem" slot-scope="item, index">          
           <a-list-item-meta>
-            <a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-            <a slot="title">{{item.name}}</a>
+            <a-avatar slot="avatar" :src=item.avatar_url />
+            <a slot="title">{{item.title}}</a>
           </a-list-item-meta>
-          <div>{{item.description}}</div>
+          <div>{{item.content}}</div>
         </a-list-item>
       </a-list>
     </a-card>
@@ -81,26 +81,59 @@ export default {
     }
     this.apps = apps.rows;
 
-  // my app id를 써야 하는데 필요한건 그냥 contract!
+  // REFACTORING NEEDED
     let goodnews_feeds = await this.$parent.eos.getActions("goodnews");
     let badnews_feeds = await this.$parent.eos.getActions("badnews");
     let weather_feeds = await this.$parent.eos.getActions("weather");
-    let soccer_feeds = await this.$parent.eos.getActions("soccer");
+    let babies_feeds = await this.$parent.eos.getActions("babies");
     
-    console.log(weather_feeds);
-    this.feeds = goodnews_feeds.actions.map(
-      action => action.action_trace.act
-    );
-    this.feeds.push(badnews_feeds.actions.map(
-      action => action.action_trace.act
-    ));
-    this.feeds.push(weather_feeds.actions.map(
-      action => action.action_trace.act
-    ));
-    this.feeds.push(soccer_feeds.actions.map(
-      action => action.action_trace.act
-    ));
+    for (let i=0; i<goodnews_feeds.actions.length; i++) {
+      this.feeds.push(
+        {
+          "account": goodnews_feeds.actions[i].action_trace.act.account,
+          "author": goodnews_feeds.actions[i].action_trace.act.data.author,
+          "title": goodnews_feeds.actions[i].action_trace.act.data.title,
+          "content": goodnews_feeds.actions[i].action_trace.act.data.content.substring(0, 40),
+          "avatar_url": "http://www.thetulsavoice.com/images/cache/cache_8/cache_3/cache_1/badnews-b4e8b138.jpeg?ver=1507762210&aspectratio=1",
+        }
+      )
+    }
 
+    for (let i=0; i<badnews_feeds.actions.length; i++) {
+      this.feeds.push(
+        {
+          "account": badnews_feeds.actions[i].action_trace.act.account,
+          "author": badnews_feeds.actions[i].action_trace.act.data.author,
+          "title": badnews_feeds.actions[i].action_trace.act.data.title,
+          "content": badnews_feeds.actions[i].action_trace.act.data.content.substring(0, 40),
+          "avatar_url": "https://media.istockphoto.com/photos/good-news-picture-id515275018?k=6&m=515275018&s=612x612&w=0&h=3cntkSAPZuzNdb_il1_txsrf7O2zbSk_THbS2jS_3Rs="
+        }
+      )
+    }
+
+    for (let i=0; i<weather_feeds.actions.length; i++) {
+      this.feeds.push(
+        {
+          "account": weather_feeds.actions[i].action_trace.act.account,
+          "author": weather_feeds.actions[i].action_trace.act.data.author,
+          "title": "Weather",
+          "content": weather_feeds.actions[i].action_trace.act.data.regions[0] + ": " + weather_feeds.actions[i].action_trace.act.data.weather[0] + " " + weather_feeds.actions[i].action_trace.act.data.temperatures[0],
+          "avatar_url": "https://lh3.googleusercontent.com/Rd7qq4MBthBBunInLWDt7Tpm_zIX6FqVM-4gZmhxHnNo6vQqYRo5c4v6riu0_EgdR2Lf"
+        }
+      )
+    }
+
+    for (let i=0; i<babies_feeds.actions.length; i++) {
+      this.feeds.push(
+        {
+          "account": babies_feeds.actions[i].action_trace.act.account,
+          "author": babies_feeds.actions[i].action_trace.act.data.author,
+          "title": "Amount of drinking milks",
+          "content": babies_feeds.actions[i].action_trace.act.data.child_name + ": " + babies_feeds.actions[i].action_trace.act.data.meal_type + " " + babies_feeds.actions[i].action_trace.act.data.volume,
+          "avatar_url": "https://i2-prod.mirror.co.uk/incoming/article6614278.ece/ALTERNATES/s615/Baby.jpg"
+        }
+      )
+    }
     console.log(this.feeds)
   },
   methods: {
