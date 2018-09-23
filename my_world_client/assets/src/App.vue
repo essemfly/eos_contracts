@@ -25,7 +25,7 @@
         <a-list-item slot="renderItem" slot-scope="item, index" v-bind:class="{ active: item.is_follow }" v-on:click="follow_app(item.id)">          
           <a-list-item-meta 
             :description="item.description">
-            <a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            <a-avatar slot="avatar" :src=item.avatar_url />
             <a slot="title">{{item.name}}</a>
           </a-list-item-meta>
         </a-list-item>
@@ -69,8 +69,8 @@ export default {
     for(let i=0; i<alerts.rows.length; i++) {
       alerts.rows[i].time = "updated:" + moment.unix(alerts.rows[i].updated_at).format("h:mm, MMDD") + " created: " + moment.unix(alerts.rows[i].created_at).format("h:mm, MMDD")  
     }
-
     this.alerts = alerts.rows;
+
     let my_apps = await this.$parent.eos.getTableRows(true, "myworld", "myworld", "flwrecords");
     this.my_app_ids = my_apps.rows.filter(contract => contract.author = "user").map(contract => contract.id);
 
@@ -80,7 +80,28 @@ export default {
       apps.rows[i].is_follow = apps.rows[i].id in this.my_apps ? true : false;
     }
     this.apps = apps.rows;
-    let actions = await this.$parent.eos.getActions("")
+
+  // my app id를 써야 하는데 필요한건 그냥 contract!
+    let goodnews_feeds = await this.$parent.eos.getActions("goodnews");
+    let badnews_feeds = await this.$parent.eos.getActions("badnews");
+    let weather_feeds = await this.$parent.eos.getActions("weather");
+    let soccer_feeds = await this.$parent.eos.getActions("soccer");
+    
+    console.log(weather_feeds);
+    this.feeds = goodnews_feeds.actions.map(
+      action => action.action_trace.act.data
+    );
+    this.feeds.push(badnews_feeds.actions.map(
+      action => action.action_trace.act.data
+    ));
+    this.feeds.push(weather_feeds.actions.map(
+      action => action.action_trace.act.data
+    ));
+    this.feeds.push(soccer_feeds.actions.map(
+      action => action.action_trace.act.data
+    ));
+
+    console.log(this.feeds)
   },
   methods: {
     moment,

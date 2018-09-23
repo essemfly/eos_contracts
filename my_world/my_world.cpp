@@ -1,7 +1,7 @@
 #include "my_world.hpp"
 
 // @abi action regctr
-void myworld::regctr(const account_name user, const string app_name, const string description, const vector<string> actions)
+void myworld::regctr(const account_name user, const string app_name, const string description, const string avatar_url, const vector<string> actions)
 {
     require_auth(user);
     app_table app(_self, _self);
@@ -18,6 +18,7 @@ void myworld::regctr(const account_name user, const string app_name, const strin
             data.id = app.available_primary_key();
             data.author = user;
             data.name = app_name;
+            data.avatar_url = avatar_url;
             data.description = description;
             data.action = action;
             data.created_at = now();

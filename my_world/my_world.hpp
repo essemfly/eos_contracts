@@ -11,7 +11,7 @@ class myworld : public contract
   public:
     myworld(account_name self) : contract(self) {}
 
-    void regctr(const account_name author, const string app_name, const string description, const vector<string> actions);
+    void regctr(const account_name author, const string app_name, const string description, const string avatar_url, const vector<string> actions);
 
     void follow(const account_name author, const uint64_t app_id);
 
@@ -60,6 +60,7 @@ class myworld : public contract
         uint64_t id;
         account_name author;
         string name;
+        string avatar_url;
         string description;
         string action;
         time created_at;
@@ -68,7 +69,7 @@ class myworld : public contract
         uint64_t primary_key() const { return id; }
         account_name by_account() const { return author; }
 
-        EOSLIB_SERIALIZE(app, (id)(author)(name)(description)(action)(created_at)(updated_at))
+        EOSLIB_SERIALIZE(app, (id)(author)(name)(avatar_url)(description)(action)(created_at)(updated_at))
     };
 
     typedef multi_index<N(apps), app> app_table;
