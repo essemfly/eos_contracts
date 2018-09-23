@@ -1,12 +1,32 @@
-#include "banks.hpp"
+#include "vaccount.hpp"
 
 // @abi action debug
-void banks::debug()
+void vaccount::debug()
 {
     prints("debug gogosing");
 }
 
-void banks::apply(const account_name contract, const account_name act)
+void vaccount::request(const account_name code)
+{
+    vacc_table vaccout(_self, _self);
+    require_auth(code);
+
+    vacc_id vacc_index;
+    get_vacc_id(vacc_index);
+    uint64_t vacc_id = vacc_index.id++;
+
+    checksum256 result
+    sha256((char *)&code, sizeof(code), &result);
+
+    vaccount.emplace(_self, [&](auto &data) {
+        data.id = vaccount.available_primary_key();
+        data.memo = result.hash;
+        data.pwd_hash = "random_generated";
+        data.amount = 0;
+    });
+}
+
+void vaccount::apply(const account_name contract, const account_name act)
 {
     if (act == N(transfer))
     {
@@ -18,13 +38,13 @@ void banks::apply(const account_name contract, const account_name act)
 
     switch (act)
     {
-        EOSIO_API(banks, (debug))
+        EOSIO_API(vaccount, (debug))
     };
 }
 
-void banks::transferReceived(const currency::transfer &transfer, const account_name code)
+void vaccount::transferCheck(const currency::transfer &transfer, const account_name code)
 {
-    if (transfer.from != N(banks))
+    if (transfer.from != N(vaccount))
     {
         if (transfer.to != _self)
         {
@@ -33,7 +53,7 @@ void banks::transferReceived(const currency::transfer &transfer, const account_n
 
         if (static_cast<uint32_t>(transfer.quantity.symbol == S(4, SYS)))
         {
-            eosio_assert(static_cast<uint32_t>(code == N(eosio.token)), "Eosio.token");
+            eosio_assert(static_cast<uint32_t>(code == N(eosio.token)), "It should be eos token");
             eosio_assert(static_cast<uint32_t>(transfer.memo.length() > 0), "Memo");
 
             asset eosReceived = transfer.quantity;
@@ -51,7 +71,7 @@ extern "C"
     void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         auto self = receiver;
-        banks contract(self);
+        vaccount contract(self);
         contract.apply(code, action);
         eosio_exit(0);
     }
