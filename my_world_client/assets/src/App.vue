@@ -134,17 +134,19 @@ export default {
         }
       )
     }
-    console.log(this.feeds)
   },
   methods: {
     moment,
     follow_app: async function(app_id) {
-      await this.$parent.eos.transaction("myworld", myworld => {
+      let tx_write = await this.$parent.eos.transaction("myworld", myworld => {
         myworld.follow(
           "seokmin",
-          app_id
+          app_id,
+          this.$parent.options
         );
       });
+      console.log(tx_write);
+      this.apps[app_id].is_follow = true;
     }
   }
 };
@@ -157,7 +159,6 @@ export default {
 .active {
   border-radius: 10px;
   padding: 10px;
-  margin-right: 10px;
   border: 5px solid yellowgreen;
 }
 </style>
